@@ -1,0 +1,12 @@
+# Database
+
+Use `backend/prisma/schema.prisma` as the source of truth for migrations.
+
+`schema.sql` mirrors the relational design for review and Supabase SQL editor reference.
+
+## Generate Migration
+
+```bash
+cd traveloop
+npm run db:migrate
+```
