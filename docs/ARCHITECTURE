@@ -1,0 +1,64 @@
+
+# TRAVELOOP Architecture
+
+## System Shape
+
+TRAVELOOP uses a clean client/server split. The frontend owns presentation, routing, UI state, and API orchestration. The backend owns authentication, validation, authorization, persistence, and future AI orchestration. PostgreSQL remains the source of truth through Prisma.
+
+## Phase Roadmap
+
+1. Authentication, dashboard, create trip, my trips.
+2. Itinerary builder, activities, budget breakdown.
+3. AI itinerary generation, maps, public sharing.
+4. Admin analytics, optimization, polish.
+
+## API Boundaries
+
+All API responses use a consistent envelope:
+
+```json
+{
+  "data": {},
+  "message": "Optional human readable message"
+}
+```
+
+Errors use:
+
+```json
+{
+  "message": "What went wrong",
+  "details": []
+}
+```
+
+## Security
+
+- Passwords are hashed with bcrypt.
+- JWTs are signed with `JWT_SECRET`.
+- Protected routes require `Authorization: Bearer <token>`.
+- Controllers validate all request payloads with Zod.
+- Trip mutations are scoped by authenticated `userId`.
+
+## Sample Phase 1 API Response
+
+`GET /api/trips`
+
+```json
+{
+  "data": [
+    {
+      "id": "clw_trip_01",
+      "name": "Tokyo Design Sprint",
+      "description": "A 7-day product inspiration route.",
+      "startDate": "2026-07-04T00:00:00.000Z",
+      "endDate": "2026-07-11T00:00:00.000Z",
+      "coverImageUrl": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf",
+      "isPublic": false,
+      "_count": {
+        "stops": 3
+      }
+    }
+  ]
+}
+```
